@@ -31,4 +31,4 @@ My Telegram channel with plugin active: https://t.me/petro_ws
 
 ## Screenshots
 
-![How looks in Telegram](assets/screenshot-1.jpg) ![Instant View](assets/screenshot-2.jpg) ![Instant View](assets/screenshot-2.jpg)
+![How looks in Telegram](assets/screenshot-1.jpg) ![Instant View](assets/screenshot-2.jpg) ![Instant View](assets/screenshot-3.jpg)  ![Instant View](assets/screenshot-4.jpg)
