@@ -21,7 +21,9 @@ Principal: it detects Telegram bot and returns special template for posts, to tr
 
 Original Telegram InstantView templates registry appears to be dead, my template was not reviewed and submitted in over 1 year. This plugin solves this issue server-side.
 
-My telegram channel with plugin active: https://t.me/petro_ws
+[My telegram channel with plugin active](https://t.me/petro_ws).
+
+[Project sources on Github](https://github.com/petrows/wp-tg-instantview) (please submit issues there).
 
 == Frequently Asked Questions ==
 
