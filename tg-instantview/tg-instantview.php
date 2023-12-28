@@ -3,7 +3,7 @@
 Plugin Name: TG-InstantView
 Plugin URI:
 Description: Triggers Telegram InstantView for posts
-Version: 1.0
+Version: 1.1
 Author: Petro
 Author URI: https://petro.ws/
 */
@@ -50,7 +50,7 @@ function tg_extract_gallery($block_content)
 }
 
 // Load replace function - just before header starts to be rendered
-add_action('get_header', 'tg_instanview', 5);
+add_action('template_redirect', 'tg_instanview', 1);
 
 // Main plugin function: detects Telegram bot and provide fake template
 function tg_instanview() {
