@@ -9,6 +9,7 @@ posts, to trigger Instant View.
 
 * No template submitting required.
 * No special links required.
+* Compatable with any cross-posting systems.
 
 Original Telegram InstantView templates registry appears to be dead,
 my template was not reviewed and submitted in over 1 year. This plugin
@@ -20,7 +21,8 @@ My Telegram channel with plugin active: https://t.me/petro_ws
 
 ## Installation
 
-* Copy the `tg-instantview` into your `wp-content/plugins` directory.
+* Download package from Releases page and install it via Wordpress Plugin Manager.
+* Or, manually: copy the `tg-instantview` into your `wp-content/plugins` directory.
 * Check plugin configuration in "Settings" -> "TG InstantView settings", you may configure your channel ID (appears in IV header).
 
 ## Notes
