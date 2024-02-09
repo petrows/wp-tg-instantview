@@ -7,14 +7,14 @@ Based on: https://gist.github.com/fishchev/ed2ca15d5ffd9594d41498a4bf9ba12e
 if (!defined("ABSPATH")) {
     exit;
 }
-$tg_options = get_option( 'tg_instantview_render' );
+$tg_options = get_option( 'tgiv_instantview_render' );
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
-	<?php if (isset($tg_options['channel_name']) && strlen($tg_options['channel_name'])) { ?>
-    <meta property="telegram:channel" content="<?php echo $tg_options['channel_name']; ?>">
+	<?php if (isset($tg_options['tgiv_channel_name']) && strlen($tg_options['tgiv_channel_name'])) { ?>
+    <meta property="telegram:channel" content="<?php echo esc_html($tg_options['tgiv_channel_name']); ?>">
 	<?php } ?>
     <meta property="tg:site_verification" content="g7j8/rPFXfhyrq5q0QQV7EsYWv4=">
     <?php wp_head(); ?>

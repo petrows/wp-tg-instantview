@@ -3,7 +3,7 @@
 Plugin Name: TG-InstantView
 Plugin URI:
 Description: Triggers Telegram InstantView for posts
-Version: 1.1
+Version: 1.2
 Author: Petro
 Author URI: https://petro.ws/
 */
@@ -12,7 +12,7 @@ if (!defined("ABSPATH")) {
     exit;
 }
 
-add_option('tg_instanview_channel_name', '');
+add_option('tgiv_instanview_channel_name', '');
 
 // Load admin settings
 if (is_admin()) {
@@ -20,12 +20,12 @@ if (is_admin()) {
 }
 
 // Register test query var
-function tg_query_vars_filter($vars) {
-    $vars[] .= 'iv';
+function tgiv_query_vars_filter($vars) {
+    $vars[] .= 'tg-instantview';
     return $vars;
 }
 
-add_filter( 'query_vars', 'tg_query_vars_filter' );
+add_filter( 'query_vars', 'tgiv_query_vars_filter' );
 
 /*
 Telegram InstantView does not expand built-in Gutenberg gallery,
@@ -35,7 +35,7 @@ can, but require submit your template, which likely will be never approved.
 To "fix" this, we are expanding it set of <figure> tags, it will
 display them as a nice built-in images gallery.
 */
-function tg_extract_gallery($block_content)
+function tgiv_extract_gallery($block_content)
 {
     // Find all images
     if (preg_match_all('/<img[^>]+\/>/', $block_content, $out)) {
@@ -50,10 +50,10 @@ function tg_extract_gallery($block_content)
 }
 
 // Load replace function - just before header starts to be rendered
-add_action('template_redirect', 'tg_instanview', 1);
+add_action('template_redirect', 'tgiv_instanview', 1);
 
 // Main plugin function: detects Telegram bot and provide fake template
-function tg_instanview() {
+function tgiv_instanview() {
     global $wp_query;
 
     // Activate only on single post page
@@ -66,12 +66,12 @@ function tg_instanview() {
         'TelegramBot (like TwitterBot)' == $_SERVER['HTTP_USER_AGENT']
         ||
         // ... or use '?iv=1' for testing
-        '1' === $wp_query->get( 'iv' )
+        '1' === $wp_query->get( 'tg-instantview' )
     ) {
         // Okay, we are activated!
 
         // Add filter to "fix" gallery, see function above
-        add_filter('render_block_core/gallery', 'tg_extract_gallery');
+        add_filter('render_block_core/gallery', 'tgiv_extract_gallery');
 
         // Dsiplay special template to trigger IV
         require (dirname(__FILE__) . '/tg-display.php');

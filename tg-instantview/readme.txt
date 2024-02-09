@@ -3,7 +3,7 @@ Contributors: petro64
 Tags: telegram
 Requires at least: 5.0
 Tested up to: 6.4
-Stable tag: 1.1
+Stable tag: 1.2
 Requires PHP: 7.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -45,7 +45,7 @@ If you still dont see InstantView on URL's, check the following:
 
 = I want to test, how Telegram sees my post via InstantView =
 
-To test, how your posts appears for Telegram bot, just add `iv=1` parameter to post URL, [Post example](https://petro.ws/vancouver-skies/?iv=1).
+To test, how your posts appears for Telegram bot, just add `tg-instantview=1` parameter to post URL, [Post example](https://petro.ws/vancouver-skies/?tg-instantview=1).
 
 == Screenshots ==
 
@@ -54,6 +54,12 @@ To test, how your posts appears for Telegram bot, just add `iv=1` parameter to p
 2. InstantView opened (gallery)
 
 == Changelog ==
+
+= 1.2 =
+* Fixes from Wordpress review: escaping, prefixes and etc
+
+= 1.1 =
+* Fixes for standart templates redirection
 
 = 1.0 =
 * Initital version

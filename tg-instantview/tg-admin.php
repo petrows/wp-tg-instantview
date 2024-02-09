@@ -1,4 +1,9 @@
 <?php
+
+if (!defined("ABSPATH")) {
+    exit;
+}
+
 class TgInstantViewSettings
 {
     /**
@@ -25,7 +30,7 @@ class TgInstantViewSettings
             'TG InstantView Admin',
             'TG InstantView',
             'manage_options',
-            'tg-instantview-setting-admin',
+            'tgiv-instantview-setting-admin',
             array( $this, 'create_admin_page' )
         );
     }
@@ -36,7 +41,7 @@ class TgInstantViewSettings
     public function create_admin_page()
     {
         // Set class property
-        $this->options = get_option( 'tg_instantview_render' );
+        $this->options = get_option( 'tgiv_instantview_render' );
 
         ?>
         <div class="wrap">
@@ -44,8 +49,8 @@ class TgInstantViewSettings
             <form method="post" action="options.php">
             <?php
                 // This prints out all hidden setting fields
-                settings_fields( 'tg_instantview' );
-                do_settings_sections( 'tg-instantview-setting-admin' );
+                settings_fields( 'tgiv_instantview' );
+                do_settings_sections( 'tgiv-instantview-setting-admin' );
                 submit_button();
             ?>
             </form>
@@ -59,24 +64,24 @@ class TgInstantViewSettings
     public function page_init()
     {
         register_setting(
-            'tg_instantview', // Option group
-            'tg_instantview_render', // Option name
+            'tgiv_instantview', // Option group
+            'tgiv_instantview_render', // Option name
             array( $this, 'sanitize' ) // Sanitize
         );
 
         add_settings_section(
-            'render_options', // ID
+            'tgiv_render_options', // ID
             'Render options', // Title
             array( $this, 'print_section_info_render' ), // Callback
-            'tg-instantview-setting-admin' // Page
+            'tgiv-instantview-setting-admin' // Page
         );
 
         add_settings_field(
-            'channel_name', // ID
+            'tgiv_channel_name', // ID
             'Telegram channel', // Title
             array( $this, 'channel_name_callback' ), // Callback
-            'tg-instantview-setting-admin', // Page
-            'render_options' // Section
+            'tgiv-instantview-setting-admin', // Page
+            'tgiv_render_options' // Section
         );
     }
 
@@ -88,8 +93,8 @@ class TgInstantViewSettings
     public function sanitize( $input )
     {
         $new_input = array();
-        if( isset( $input['channel_name'] ) ) {
-            $channel_name = $input['channel_name'];
+        if( isset( $input['tgiv_channel_name'] ) ) {
+            $channel_name = $input['tgiv_channel_name'];
             $channel_name = trim($channel_name);
             $channel_name = strtolower($channel_name);
             $channel_name = preg_replace( '/[^a-z0-9_-]+/', '', $channel_name);
@@ -97,7 +102,7 @@ class TgInstantViewSettings
             if (strlen($channel_name) && $channel_name[0] != '@') {
                 $channel_name = '@'.$channel_name;
             }
-            $new_input['channel_name'] = $channel_name;
+            $new_input['tgiv_channel_name'] = $channel_name;
         }
         return $new_input;
     }
@@ -116,8 +121,8 @@ class TgInstantViewSettings
     public function channel_name_callback()
     {
         printf(
-            '<input type="text" id="channel_name" name="tg_instantview_render[channel_name]" value="%s" />',
-            isset( $this->options['channel_name'] ) ? esc_attr( $this->options['channel_name']) : ''
+            '<input type="text" id="tgiv_channel_name" name="tgiv_instantview_render[tgiv_channel_name]" value="%s" />',
+            isset( $this->options['tgiv_channel_name'] ) ? esc_attr( $this->options['tgiv_channel_name']) : ''
         );
     }
 }

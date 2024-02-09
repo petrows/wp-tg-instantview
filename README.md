@@ -27,7 +27,7 @@ My Telegram channel with plugin active: https://t.me/petro_ws
 
 ## Notes
 
-* To test, how your posts appears for Telegram bot, just add `iv=1` parameter to post URL, [Post example](https://petro.ws/vancouver-skies/?iv=1).
+* To test, how your posts appears for Telegram bot, just add `tg-instantview=1` parameter to post URL, [Post example](https://petro.ws/vancouver-skies/?tg-instantview=1).
 * Telegram bot **caches** parsing result, and Instant View will be triggered for **new** URL's for bot. You may prune cache by adding some random parameters like `test=123`, Telegram bot will request again.
 * Instant View works only on mobile cliens! Do not try to test it desktop clients.
 
