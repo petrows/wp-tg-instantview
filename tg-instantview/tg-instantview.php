@@ -65,7 +65,7 @@ function tgiv_instanview() {
         // This is Telegram Bot coming?
         'TelegramBot (like TwitterBot)' == $_SERVER['HTTP_USER_AGENT']
         ||
-        // ... or use '?iv=1' for testing
+        // ... or use '?tg-instantview=1' for testing
         '1' === $wp_query->get( 'tg-instantview' )
     ) {
         // Okay, we are activated!
