@@ -1,11 +1,13 @@
 <?php
 /*
 Plugin Name: TG-InstantView
-Plugin URI:
+Plugin URI: https://github.com/petrows/wp-tg-instantview
 Description: Triggers Telegram InstantView for posts
-Version: 1.2
+Version: 1.3
 Author: Petro
 Author URI: https://petro.ws/
+License: GPLv3
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 */
 
 if (!defined("ABSPATH")) {

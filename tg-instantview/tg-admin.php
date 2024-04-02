@@ -4,7 +4,7 @@ if (!defined("ABSPATH")) {
     exit;
 }
 
-class TgInstantViewSettings
+class tgiv_settings
 {
     /**
      * Holds the values to be used in the fields callbacks
@@ -127,4 +127,4 @@ class TgInstantViewSettings
     }
 }
 
-$my_settings_page = new TgInstantViewSettings();
+$tgiv_settings_page = new tgiv_settings();

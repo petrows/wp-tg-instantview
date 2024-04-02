@@ -1,9 +1,9 @@
-=== Plugin Name ===
+=== TG-InstantView ===
 Contributors: petro64
 Tags: telegram
 Requires at least: 5.0
 Tested up to: 6.4
-Stable tag: 1.2
+Stable tag: 1.3
 Requires PHP: 7.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -51,9 +51,12 @@ To test, how your posts appears for Telegram bot, just add `tg-instantview=1` pa
 
 1. InstantView in Telegram mobile channel
 2. InstantView opened
-2. InstantView opened (gallery)
+3. InstantView opened (gallery)
 
 == Changelog ==
+
+= 1.3 =
+* Fixes from Wordpress review: template html, prefixes, license
 
 = 1.2 =
 * Fixes from Wordpress review: escaping, prefixes and etc

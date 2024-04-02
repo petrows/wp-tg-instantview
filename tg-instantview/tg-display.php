@@ -34,13 +34,19 @@ $tg_options = get_option( 'tgiv_instantview_render' );
 
 	<footer class="entry-footer">
 	<?php
-		$categories_list = get_the_category_list(', ');
-		if ($categories_list) {
-			echo '<div class="cat-links">' . $categories_list . '</div>';
+		if (get_the_category_list()) {
+			?>
+				<div class="cat-links">
+					<?php the_category(', '); ?>
+				</div>
+			<?php
 		}
-		$tags_list = get_the_tag_list('', ', ');
-		if ($tags_list) {
-			echo '<div class="tags-links">' . $tags_list . '</div>';
+		if (get_the_tag_list()) {
+			?>
+				<div class="tags-links">
+					<?php the_tags('', ', '); ?>
+				</div>
+			<?php
 		}
 	?>
 
