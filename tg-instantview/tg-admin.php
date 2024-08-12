@@ -41,7 +41,7 @@ class tgiv_settings
     public function create_admin_page()
     {
         // Set class property
-        $this->options = get_option( 'tgiv_instantview_render' );
+        $this->options = tgiv_options();
 
         ?>
         <div class="wrap">
@@ -83,6 +83,20 @@ class tgiv_settings
             'tgiv-instantview-setting-admin', // Page
             'tgiv_render_options' // Section
         );
+        add_settings_field(
+            'tgiv_display_date', // ID
+            'Display post date?', // Title
+            array( $this, 'display_date_callback' ), // Callback
+            'tgiv-instantview-setting-admin', // Page
+            'tgiv_render_options' // Section
+        );
+        add_settings_field(
+            'tgiv_display_author', // ID
+            'Display post author?', // Title
+            array( $this, 'display_author_callback' ), // Callback
+            'tgiv-instantview-setting-admin', // Page
+            'tgiv_render_options' // Section
+        );
     }
 
     /**
@@ -93,7 +107,7 @@ class tgiv_settings
     public function sanitize( $input )
     {
         $new_input = array();
-        if( isset( $input['tgiv_channel_name'] ) ) {
+        if (isset($input['tgiv_channel_name'])) {
             $channel_name = $input['tgiv_channel_name'];
             $channel_name = trim($channel_name);
             $channel_name = strtolower($channel_name);
@@ -104,6 +118,8 @@ class tgiv_settings
             }
             $new_input['tgiv_channel_name'] = $channel_name;
         }
+        $new_input['tgiv_display_date'] = isset($input['tgiv_display_date']);
+        $new_input['tgiv_display_author'] = isset($input['tgiv_display_author']);
         return $new_input;
     }
 
@@ -123,6 +139,20 @@ class tgiv_settings
         printf(
             '<input type="text" id="tgiv_channel_name" name="tgiv_instantview_render[tgiv_channel_name]" value="%s" />',
             isset( $this->options['tgiv_channel_name'] ) ? esc_attr( $this->options['tgiv_channel_name']) : ''
+        );
+    }
+    public function display_date_callback()
+    {
+        printf(
+            '<input type="checkbox" id="tgiv_display_date" name="tgiv_instantview_render[tgiv_display_date]" value="ON" %s/>',
+            $this->options['tgiv_display_date'] ? 'checked="checked"' : ''
+        );
+    }
+    public function display_author_callback()
+    {
+        printf(
+            '<input type="checkbox" id="tgiv_display_author" name="tgiv_instantview_render[tgiv_display_author]" value="ON" %s/>',
+            $this->options['tgiv_display_author'] ? 'checked="checked"' : ''
         );
     }
 }

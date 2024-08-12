@@ -3,7 +3,7 @@
 Plugin Name: TG-InstantView
 Plugin URI: https://github.com/petrows/wp-tg-instantview
 Description: Triggers Telegram InstantView for posts
-Version: 1.3
+Version: 1.4
 Author: Petro
 Author URI: https://petro.ws/
 License: GPLv3
@@ -14,7 +14,9 @@ if (!defined("ABSPATH")) {
     exit;
 }
 
-add_option('tgiv_instanview_channel_name', '');
+// Define options and defaults:
+// Displayed Telegram channel name
+add_option('tgiv_instantview_render', array());
 
 // Load admin settings
 if (is_admin()) {
@@ -30,6 +32,63 @@ function tgiv_query_vars_filter($vars) {
 add_filter( 'query_vars', 'tgiv_query_vars_filter' );
 
 /*
+Function to get and prepare default options for plugin
+*/
+function tgiv_options() {
+    $options = get_option( 'tgiv_instantview_render' );
+    if (!isset($options['tgiv_channel_name'])) {
+        $options['tgiv_channel_name'] = '';
+    }
+    if (!isset($options['tgiv_display_date'])) {
+        $options['tgiv_display_date'] = true;
+    } else {
+        $options['tgiv_display_date'] = boolval($options['tgiv_display_date']);
+    }
+    if (!isset($options['tgiv_display_author'])) {
+        $options['tgiv_display_author'] = true;
+    } else {
+        $options['tgiv_display_author'] = boolval($options['tgiv_display_author']);
+    }
+    return $options;
+}
+
+/*
+Function to get prepared meta HTML tags from "normal" WP output.
+We have to use ob_* functions to get HTML, as seems to be there is
+no better way to get rendered tags from SEO plugins and etc.
+*/
+function tgiv_extract_meta() {
+    ob_start();
+    wp_head();
+    $html_output = ob_get_contents();
+    ob_end_clean();
+    $meta_out = array();
+    // Find all meta tags
+    if (preg_match_all('/<meta([^>]+)\/>/Uuims', $html_output, $out)) {
+        $html = '';
+        foreach($out[1] as $meta_contents) {
+            // Extract HTML attributes
+            $meta_name = '';
+            $meta_value = '';
+            if (preg_match('/property="([^"]*)"/Uuims', $meta_contents, $meta_v)) {
+                $meta_name = $meta_v[1];
+            } else if (preg_match('/property=\'([^\']*)\'/Uuims', $meta_contents, $meta_v)) {
+                $meta_name = $meta_v[1];
+            }
+            if (preg_match('/content="([^"]*)"/Uuims', $meta_contents, $meta_v)) {
+                $meta_value = $meta_v[1];
+            } else if (preg_match('/content=\'([^\']*)\'/Uuims', $meta_contents, $meta_v)) {
+                $meta_value = $meta_v[1];
+            }
+            if ($meta_name) {
+                $meta_out[$meta_name] = htmlspecialchars_decode($meta_value);
+            }
+        }
+    }
+    return $meta_out;
+}
+
+/*
 Telegram InstantView does not expand built-in Gutenberg gallery,
 with nested <figure> with other figures inside. More precise, it
 can, but require submit your template, which likely will be never approved.
@@ -37,8 +96,7 @@ can, but require submit your template, which likely will be never approved.
 To "fix" this, we are expanding it set of <figure> tags, it will
 display them as a nice built-in images gallery.
 */
-function tgiv_extract_gallery($block_content)
-{
+function tgiv_extract_gallery($block_content) {
     // Find all images
     if (preg_match_all('/<img[^>]+\/>/', $block_content, $out)) {
         $html = '';
