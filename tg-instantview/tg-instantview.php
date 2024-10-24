@@ -112,6 +112,12 @@ function tgiv_extract_gallery($block_content) {
 // Load replace function - just before header starts to be rendered
 add_action('template_redirect', 'tgiv_instanview', 1);
 
+// Function to disable lazy load function
+function tgiv_disable_lazy_load_featured_images($attr, $attachment = null) {
+	$attr['loading'] = 'eager';
+	return $attr;
+}
+
 // Main plugin function: detects Telegram bot and provide fake template
 function tgiv_instanview() {
     global $wp_query;
@@ -129,6 +135,10 @@ function tgiv_instanview() {
         '1' === $wp_query->get( 'tg-instantview' )
     ) {
         // Okay, we are activated!
+
+        // Disable Lazy-load
+        add_filter('wp_lazy_loading_enabled', '__return_false');
+        add_filter('wp_get_attachment_image_attributes', 'tgiv_disable_lazy_load_featured_images');
 
         // Add filter to "fix" gallery, see function above
         add_filter('render_block_core/gallery', 'tgiv_extract_gallery');
