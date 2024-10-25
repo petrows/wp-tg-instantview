@@ -114,8 +114,64 @@ add_action('template_redirect', 'tgiv_instanview', 1);
 
 // Function to disable lazy load function
 function tgiv_disable_lazy_load_featured_images($attr, $attachment = null) {
+    if (@$attr['data-src']) {
+        $attr['src'] = $attr['data-src'];
+        unset($attr['data-src']);
+    }
 	$attr['loading'] = 'eager';
 	return $attr;
+}
+
+// Function to extract image attributes and fix "enforced lazy-load" with generated preview
+function tgiv_post_postprocessing(WP_Post $post) {
+    $content = $post->post_content;
+    // Remove noscript blocks, to aviod content duplicates
+    $content = preg_replace('/<noscript[^>]*\/?>.*<\/noscript>/Uuims', '', $content);
+    // Process embed images
+    $content = preg_replace_callback('/<img (.*)\/?>/Uuims', 'tgiv_post_postprocessing_images', $content);
+
+    $post->post_content = $content;
+}
+
+// Function to process images for IV
+function tgiv_post_postprocessing_images($image) {
+    $image_out = $image[0];
+    // Image has attributes?
+    if (preg_match_all('/([^= ]+)="([^"]+)"/Uuims', $image[1], $attr)) {
+        // error_log("Image: $image[0]");
+        // error_log(print_r($image, true));
+        // error_log(print_r($attr, true));
+
+        // Combine all attributes like src="abc" to:
+        // attr_array[src] = abc
+        $attr_array = array();
+        foreach($attr[1] as $attr_index => $attr_name) {
+            $attr_array[$attr_name] = $attr[2][$attr_index];
+        }
+        // error_log(print_r($attr_array, true));
+
+        // Now we have filtered array of all attrs, check the "real src"?
+        // If data-srcis set and has content, use it as "normal" src
+        if (@$attr_array['data-src']) {
+            $attr_array['src'] = $attr_array['data-src'];
+        }
+        $attr_array['data-pws'] = 'iv';
+        $attr_array['loading'] = 'eager';
+        $attr_array['decoding'] = 'sync';
+
+        // Drop attrubutes, what we dont need here
+        unset($attr_array['class']);
+        unset($attr_array['data-src']);
+
+        // Reconstruct image back from attrs
+        $image_out = '<img ';
+        foreach($attr_array as $k => $v) {
+            $image_out .= "$k=\"$v\" ";
+        }
+        $image_out .= '/>';
+    }
+    // $image_out = '<img src="none" data-pws="test"/>';
+    return $image_out;
 }
 
 // Main plugin function: detects Telegram bot and provide fake template
@@ -137,8 +193,10 @@ function tgiv_instanview() {
         // Okay, we are activated!
 
         // Disable Lazy-load
-        add_filter('wp_lazy_loading_enabled', '__return_false');
-        add_filter('wp_get_attachment_image_attributes', 'tgiv_disable_lazy_load_featured_images');
+        add_filter('wp_lazy_loading_enabled', '__return_false', 9999999);
+        add_filter('do_rocket_lazyload', '__return_false', 9999999);
+        add_filter('wp_get_attachment_image_attributes', 'tgiv_disable_lazy_load_featured_images', 9999999);
+        add_filter('the_post', 'tgiv_post_postprocessing', 9999999);
 
         // Add filter to "fix" gallery, see function above
         add_filter('render_block_core/gallery', 'tgiv_extract_gallery');
