@@ -15,13 +15,16 @@ Original Telegram InstantView templates registry appears to be dead,
 my template was not reviewed and submitted in over 1 year. This plugin
 solves this issue server-side.
 
+Plugin was verified by WP team and published in Plugin Registry: https://wordpress.org/plugins/tg-instantview
+
 Thanks a lot [@fishchev for template](https://gist.github.com/fishchev/ed2ca15d5ffd9594d41498a4bf9ba12e).
 
 My Telegram channel with plugin active: https://t.me/petro_ws
 
 ## Installation
 
-* Download package from Releases page and install it via Wordpress Plugin Manager.
+* Install plugin from [Wordpress plugin registry](https://wordpress.org/plugins/tg-instantview).
+* Or, download package from Releases page and install it via Wordpress Plugin Manager.
 * Or, manually: copy the `tg-instantview` into your `wp-content/plugins` directory.
 * Check plugin configuration in "Settings" -> "TG InstantView settings", you may configure your channel ID (appears in IV header).
 
