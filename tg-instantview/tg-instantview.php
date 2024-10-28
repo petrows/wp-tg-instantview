@@ -192,6 +192,11 @@ function tgiv_instanview() {
     ) {
         // Okay, we are activated!
 
+        // We have to mark our output as coming out as "Feed".
+        // This is important to ask other plugins, to be more "nice" with output,
+        // fixes issue with EWWW Image Optimizer (and probably others).
+        $wp_query->is_feed = true;
+
         // Disable Lazy-load
         add_filter('wp_lazy_loading_enabled', '__return_false', 9999999);
         add_filter('do_rocket_lazyload', '__return_false', 9999999);
