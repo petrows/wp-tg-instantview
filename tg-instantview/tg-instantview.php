@@ -53,6 +53,22 @@ function tgiv_options() {
 }
 
 /*
+Functon to control displayed links on plugin list page
+*/
+function tgiv_add_action_links($actions)
+{
+    $settings_url = admin_url( 'options-general.php?page=tgiv-instantview-setting-admin' );
+
+    $links_add = array(
+        '<a href="' . $settings_url . '">' . __( 'Settings' ) . '</a>',
+    );
+    $actions = array_merge( $links_add, $actions);
+    return $actions;
+}
+
+add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'tgiv_add_action_links' );
+
+/*
 Function to get prepared meta HTML tags from "normal" WP output.
 We have to use ob_* functions to get HTML, as seems to be there is
 no better way to get rendered tags from SEO plugins and etc.
