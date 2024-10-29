@@ -95,6 +95,10 @@ if (isset($tgiv_wp_meta['og:description'])) {
 			<?php
 		}
 	?>
+	<br /><br />
+	<div class="tl_copyright_field">
+		Telegram InstantView triggered by <a href="https://wordpress.org/plugins/tg-instantview/">TG-InstantView plugin</a>
+	</div>
 
 	</footer><!-- .entry-footer -->
 </article><!-- #post-## -->
