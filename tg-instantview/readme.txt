@@ -58,7 +58,7 @@ To test, how your posts appears for Telegram bot, just add `tg-instantview=1` pa
 = 1.5 =
 * Fixes issues related with images Lazy-load, that may break IV layout
 * Fixes issues with various plugins (like EWWW Image Optimizer) with SEO and CDN features
-* Add shortcut-links to plugins list page
+* Add shortcut links to plugins list page
 * Add plugin credits to IV preview
 
 = 1.4 =
