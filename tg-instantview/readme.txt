@@ -3,7 +3,7 @@ Contributors: petro64
 Tags: telegram
 Requires at least: 5.0
 Tested up to: 6.6
-Stable tag: 1.4
+Stable tag: 1.5
 Requires PHP: 7.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -54,6 +54,12 @@ To test, how your posts appears for Telegram bot, just add `tg-instantview=1` pa
 3. InstantView opened (gallery)
 
 == Changelog ==
+
+= 1.5 =
+* Fixes issues related with images Lazy-load, that may break IV layout
+* Fixes issues with various plugins (like EWWW Image Optimizer) with SEO and CDN features
+* Add shortcut-links to plugins list page
+* Add plugin credits to IV preview
 
 = 1.4 =
 * Plugin now provides full set of OpenGraph meta information for post and does not require SEO plugins anymore
