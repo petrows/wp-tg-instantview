@@ -3,7 +3,7 @@
 Plugin Name: TG-InstantView
 Plugin URI: https://github.com/petrows/wp-tg-instantview
 Description: Triggers Telegram InstantView for posts
-Version: 1.4
+Version: 1.5
 Author: Petro
 Author URI: https://petro.ws/
 License: GPLv3
