@@ -3,7 +3,7 @@
 Plugin Name: TG-InstantView
 Plugin URI: https://github.com/petrows/wp-tg-instantview
 Description: Triggers Telegram InstantView for posts
-Version: 1.5
+Version: 1.6
 Author: Petro
 Author URI: https://petro.ws/
 License: GPLv3
@@ -147,9 +147,11 @@ function tgiv_instanview() {
         return;
     }
 
+    $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+
     if (
         // This is Telegram Bot coming?
-        'TelegramBot (like TwitterBot)' == $_SERVER['HTTP_USER_AGENT']
+        'TelegramBot (like TwitterBot)' == $user_agent
         ||
         // ... or use '?tg-instantview=1' for testing
         '1' === $wp_query->get( 'tg-instantview' )
