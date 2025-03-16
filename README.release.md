@@ -35,9 +35,11 @@ Publish new version into WP svn:
 
 ```bash
 cd tmp/tg-instantview-svn
+svn revert --recursive .
+svn up
 cp -rva ../../tg-instantview/* trunk/
-svn cp trunk/* tags/$VERSION
-svn add .
+svn cp --parents trunk/* tags/$VERSION
+svn add --force .
 svn ci -m "Version $VERSION"
 ```
 
