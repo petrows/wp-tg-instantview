@@ -56,6 +56,9 @@ if (isset($tgiv_wp_meta['og:description'])) {
 	$tgiv_meta['og:description'] = wp_strip_all_tags(get_the_excerpt());
 }
 
+print_r($_GET);
+print_r($_SERVER);
+
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
