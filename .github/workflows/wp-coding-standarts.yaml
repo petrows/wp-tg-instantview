@@ -7,8 +7,11 @@ jobs:
       image: composer:2.9.2   
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # important!
       - name: Install composer dependencies
         run: |            
+            git config --global --add safe.directory /__w/wp-tg-instantview/wp-tg-instantview
             composer install
       - uses: thenabeel/action-phpcs@v8
         with:
