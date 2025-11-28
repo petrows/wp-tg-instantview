@@ -1,0 +1,19 @@
+name: WordPress Coding Standards
+on: [push]
+jobs:
+  check:
+    runs-on: self-hosted
+    container:
+      image: composer:2.9.2   
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install composer dependencies
+        run: |
+            composer config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+            composer require --dev wp-coding-standards/wpcs:"^3.0"
+      - uses: thenabeel/action-phpcs@v8
+        with:
+          files: "tg-instantview/**/*.php"
+          phpcs_path: php vendor/bin/phpcs
+          standard: WordPress
+          
