@@ -1,0 +1,38 @@
+on: pull_request
+
+name: Inspections
+jobs:
+  wp-checks:
+    name: Run WP inspection
+    runs-on: self-hosted
+    container:
+      image: composer:2.9.2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install composer dependencies
+        run: |
+          git config --global --add safe.directory .
+          composer install
+
+      - name: Set Path
+        run: |
+          echo "$PWD/vendor/bin/" >> $GITHUB_PATH
+
+      - name: Install latest version of dist-archive-command
+        run: |
+          export HOME=$PWD/.wp
+          wp package install wp-cli/dist-archive-command:@stable
+
+      - name: Build plugin
+        run: |
+          export HOME=$PWD/.wp
+          wp dist-archive . ./tg-instantview.zip
+          mkdir tmp-build
+          unzip tg-instantview.zip -d tmp-build
+
+      - name: Run plugin check
+        uses: wordpress/plugin-check-action@v1.0.6
+        with:
+          build-dir: './tmp-build/tg-instantview'

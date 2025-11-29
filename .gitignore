@@ -3,3 +3,5 @@ svn
 vendor/
 output.log
 phpcs.json
+.wp/
+.wp-cli/
