@@ -2,38 +2,54 @@ on: pull_request
 
 name: Inspections
 jobs:
-  wp-checks:
-    name: Run WP inspection
+  phpcs:
+    name: Run PHPCS inspection
     runs-on: self-hosted
-    container:
-      image: composer:2.9.2
-      options: -u 2025:2025
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+    - name: Run PHPCS inspection
+      uses: rtCamp/action-phpcs-code-review@v3
+      env:
+        GH_BOT_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
+        SKIP_FOLDERS: "assets,tests,.github"
+        PHPCS_SNIFFS_EXCLUDE: "WordPress.Files.FileName"
+      with:
+        args: "WordPress,WordPress-Core,WordPress-Docs"
 
-      - name: Install composer dependencies
-        run: |
-          git config --global --add safe.directory .
-          composer install
+  # wp-checks:
+  #   name: Run WP inspection
+  #   runs-on: self-hosted
+  #   container:
+  #     image: composer:2.9.2
+  #     options: -u 2025:2025
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
 
-      - name: Set Path
-        run: |
-          echo "$PWD/vendor/bin/" >> $GITHUB_PATH
+  #     - name: Install composer dependencies
+  #       run: |
+  #         git config --global --add safe.directory .
+  #         composer install
 
-      - name: Install latest version of dist-archive-command
-        run: |
-          export HOME=$PWD/.wp
-          wp package install wp-cli/dist-archive-command:@stable
+  #     - name: Set Path
+  #       run: |
+  #         echo "$PWD/vendor/bin/" >> $GITHUB_PATH
 
-      - name: Build plugin
-        run: |
-          export HOME=$PWD/.wp
-          wp dist-archive . ./tg-instantview.zip
-          mkdir tmp-build
-          unzip tg-instantview.zip -d tmp-build
+  #     - name: Install latest version of dist-archive-command
+  #       run: |
+  #         export HOME=$PWD/.wp
+  #         wp package install wp-cli/dist-archive-command:@stable
 
-      - name: Run plugin check
-        uses: wordpress/plugin-check-action@v1.0.6
-        with:
-          build-dir: './tmp-build/tg-instantview'
+  #     - name: Build plugin
+  #       run: |
+  #         export HOME=$PWD/.wp
+  #         wp dist-archive . ./tg-instantview.zip
+  #         mkdir tmp-build
+  #         unzip tg-instantview.zip -d tmp-build
+
+  #     - name: Run plugin check
+  #       uses: wordpress/plugin-check-action@v1.0.6
+  #       with:
+  #         build-dir: './tmp-build/tg-instantview'
