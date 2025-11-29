@@ -23,7 +23,7 @@ class tgiv_settings {
 	 * Add options page
 	 */
 	public function add_plugin_page() {
-		// This page will be under "Settings"
+		/* This page will be under "Settings" */
 		add_options_page(
 			'TG InstantView Admin',
 			'TG InstantView',
@@ -37,7 +37,7 @@ class tgiv_settings {
 	 * Options page callback
 	 */
 	public function create_admin_page() {
-		// Set class property
+		/* Set class property */
 		$this->options = tgiv_options();
 
 		?>
@@ -45,7 +45,7 @@ class tgiv_settings {
 			<h1>TG InstantView settings</h1>
 			<form method="post" action="options.php">
 			<?php
-				// This prints out all hidden setting fields
+				/* This prints out all hidden setting fields */
 				settings_fields( 'tgiv_instantview' );
 				do_settings_sections( 'tgiv-instantview-setting-admin' );
 				submit_button();
@@ -60,38 +60,38 @@ class tgiv_settings {
 	 */
 	public function page_init() {
 		register_setting(
-			'tgiv_instantview', // Option group
-			'tgiv_instantview_render', // Option name
-			array( $this, 'sanitize' ) // Sanitize
+			'tgiv_instantview', // Option group.
+			'tgiv_instantview_render', // Option name.
+			array( $this, 'sanitize' ) // Sanitize.
 		);
 
 		add_settings_section(
-			'tgiv_render_options', // ID
-			'Render options', // Title
-			array( $this, 'print_section_info_render' ), // Callback
-			'tgiv-instantview-setting-admin' // Page
+			'tgiv_render_options', // ID.
+			'Render options', // Title.
+			array( $this, 'print_section_info_render' ), // Callback.
+			'tgiv-instantview-setting-admin' // Page.
 		);
 
 		add_settings_field(
-			'tgiv_channel_name', // ID
-			'Telegram channel', // Title
-			array( $this, 'channel_name_callback' ), // Callback
-			'tgiv-instantview-setting-admin', // Page
-			'tgiv_render_options' // Section
+			'tgiv_channel_name', // ID.
+			'Telegram channel', // Title.
+			array( $this, 'channel_name_callback' ), // Callback.
+			'tgiv-instantview-setting-admin', // Page.
+			'tgiv_render_options' // Section.
 		);
 		add_settings_field(
-			'tgiv_display_date', // ID
-			'Display post date?', // Title
-			array( $this, 'display_date_callback' ), // Callback
-			'tgiv-instantview-setting-admin', // Page
-			'tgiv_render_options' // Section
+			'tgiv_display_date', // ID.
+			'Display post date?', // Title.
+			array( $this, 'display_date_callback' ), // Callback.
+			'tgiv-instantview-setting-admin', // Page.
+			'tgiv_render_options' // Section.
 		);
 		add_settings_field(
-			'tgiv_display_author', // ID
-			'Display post author?', // Title
-			array( $this, 'display_author_callback' ), // Callback
-			'tgiv-instantview-setting-admin', // Page
-			'tgiv_render_options' // Section
+			'tgiv_display_author', // ID.
+			'Display post author?', // Title.
+			array( $this, 'display_author_callback' ), // Callback.
+			'tgiv-instantview-setting-admin', // Page.
+			'tgiv_render_options' // Section.
 		);
 	}
 
