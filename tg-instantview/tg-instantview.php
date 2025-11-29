@@ -115,7 +115,7 @@ function tgiv_extract_meta() {
 				$meta_value = $meta_v[1];
 			}
 			if ( $meta_name ) {
-				$meta_out[ $meta_name ] = htmlspecialchars_decode( $meta_value );
+				$meta_out[ $meta_name ] = htmlspecialchars_decode( $meta_value, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML401 );
 			}
 		}
 	}
@@ -134,7 +134,7 @@ function tgiv_extract_meta() {
  * @return string Modified block content.
  */
 function tgiv_extract_gallery( $block_content ) {
-	// Find all images
+	/* Find all images inside gallery */
 	if ( preg_match_all( '/<img[^>]+\/>/', $block_content, $out ) ) {
 		$html = '';
 		foreach ( $out[0] as $v ) {
@@ -151,12 +151,13 @@ add_action( 'template_redirect', 'tgiv_instanview', 1 );
 
 /** Disable lazy-load for featured images.
  *
- * @param array $attr Image attributes.
+ * @param array   $attr Image attributes.
  * @param WP_Post $attachment Attachment object.
  * @return array Modified attributes.
  */
 function tgiv_disable_lazy_load_featured_images( $attr, $attachment = null ) {
-	if ( @$attr['data-src'] ) {
+	( $attachment ); /* unused */
+	if ( isset( $attr['data-src'] ) && $attr['data-src'] ) {
 		$attr['src'] = $attr['data-src'];
 		unset( $attr['data-src'] );
 	}
@@ -175,12 +176,15 @@ function tgiv_instanview() {
 		return;
 	}
 
-	$user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '';
+	$user_agent = '';
+	if ( isset( $_SERVER['HTTP_USER_AGENT'] ) ) {
+		$user_agent = wp_unslash( $_SERVER['HTTP_USER_AGENT'] );
+	}
 
 	if ( /* This is Telegram Bot coming? */
-		'TelegramBot (like TwitterBot)' == $user_agent
+		'TelegramBot (like TwitterBot)' === $user_agent
 
-		/* ... or use '?tg-instantview=1' for testing */
+		/* ... or just use GET var '?tg-instantview=1' for testing */
 		|| '1' === $wp_query->get( 'tg-instantview' )
 	) {
 		/*

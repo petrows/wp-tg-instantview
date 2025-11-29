@@ -1,12 +1,16 @@
 <?php
-/*
-This is a fake template from teletype.in, triggers IV
+/**
+ * This is a fake template from teletype.in, triggers IV
+ *
+ * Based on: https://gist.github.com/fishchev/ed2ca15d5ffd9594d41498a4bf9ba12e
+ *
+ * @package   TG-InstantView
+ */
 
-Based on: https://gist.github.com/fishchev/ed2ca15d5ffd9594d41498a4bf9ba12e
-*/
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
 /* Get Plugin settings array */
 $tgiv_options = tgiv_options();
 /* Check for default values */
