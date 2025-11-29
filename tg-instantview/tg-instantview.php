@@ -178,6 +178,11 @@ function tgiv_instanview() {
 
 	$user_agent = '';
 	if ( isset( $_SERVER['HTTP_USER_AGENT'] ) ) {
+		/*
+			This expression triggers InputNotSanitized warnings, and this is false-positive.
+			See: https://github.com/WordPress/WordPress-Coding-Standards/issues/2246
+		*/
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		$user_agent = wp_unslash( $_SERVER['HTTP_USER_AGENT'] );
 	}
 

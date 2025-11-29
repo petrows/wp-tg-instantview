@@ -1,13 +1,23 @@
 <?php
+/**
+ * TG InstantView Admin Page
+ *
+ * @package   TG-InstantView
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class tgiv_settings {
+/**
+ * TG InstantView Admin settings page class
+ */
+class Tgiv_Settings {
 
 	/**
 	 * Holds the values to be used in the fields callbacks
+	 *
+	 * @var array
 	 */
 	private $options;
 
@@ -98,7 +108,7 @@ class tgiv_settings {
 	/**
 	 * Sanitize each setting field as needed
 	 *
-	 * @param array $input Contains all settings fields as array keys
+	 * @param array $input Contains all settings fields as array keys.
 	 */
 	public function sanitize( $input ) {
 		$new_input = array();
@@ -107,8 +117,8 @@ class tgiv_settings {
 			$channel_name = trim( $channel_name );
 			$channel_name = strtolower( $channel_name );
 			$channel_name = preg_replace( '/[^a-z0-9_-]+/', '', $channel_name );
-			// Channel name should starts from @
-			if ( strlen( $channel_name ) && $channel_name[0] != '@' ) {
+			/* Channel name must starts from @ */
+			if ( strlen( $channel_name ) && '@' !== $channel_name[0] ) {
 				$channel_name = '@' . $channel_name;
 			}
 			$new_input['tgiv_channel_name'] = $channel_name;
@@ -134,12 +144,20 @@ class tgiv_settings {
 			isset( $this->options['tgiv_channel_name'] ) ? esc_attr( $this->options['tgiv_channel_name'] ) : ''
 		);
 	}
+
+	/**
+	 * Display checkbox for date option
+	 */
 	public function display_date_callback() {
 		printf(
 			'<input type="checkbox" id="tgiv_display_date" name="tgiv_instantview_render[tgiv_display_date]" value="ON" %s/>',
 			$this->options['tgiv_display_date'] ? 'checked="checked"' : ''
 		);
 	}
+
+	/**
+	 * Display checkbox for author option
+	 */
 	public function display_author_callback() {
 		printf(
 			'<input type="checkbox" id="tgiv_display_author" name="tgiv_instantview_render[tgiv_display_author]" value="ON" %s/>',
@@ -148,4 +166,4 @@ class tgiv_settings {
 	}
 }
 
-$tgiv_settings_page = new tgiv_settings();
+$tgiv_settings_page = new Tgiv_Settings();
