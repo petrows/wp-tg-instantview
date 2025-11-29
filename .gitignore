@@ -1,3 +1,5 @@
 tmp
 svn
 vendor/
+output.log
+phpcs.json

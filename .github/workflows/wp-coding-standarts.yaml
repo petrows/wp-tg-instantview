@@ -1,7 +1,7 @@
 name: WordPress Coding Standards
 on: [push]
 jobs:
-  check:
+  phpcs-report:
     runs-on: self-hosted
     container:
       image: composer:2.9.2   
@@ -15,9 +15,31 @@ jobs:
             git config --global --add safe.directory /__w/wp-tg-instantview/wp-tg-instantview
             composer install
 
-      - name: PHP Code Sniffer
-        uses: php-actions/phpcs@v1
+      - name: Run WordPress Coding Standards
+        run: |
+          vendor/bin/phpcs -ps tg-instantview/ --standard=WordPress --report-json=phpcs.json
+
+      # Archive artifacts
+      - name: Upload artifact report
+        uses: actions/upload-artifact@v5
         with:
-          vendored_phpcs_path: ./vendor/bin/phpcs
-          path: tg-instantview/
-          standard: WordPress
+          name: phpcs-report
+          path: phpcs.json
+        if: always()
+
+  phpcs-annotate:
+    runs-on: self-hosted
+    needs: phpcs-report
+    if: always()
+    container:
+      image: node:25.2.1-alpine
+    steps:
+      - uses: actions/download-artifact@v5
+        with:
+          name: phpcs-report
+          path: phpcs.json
+      - name: PHP Code Sniffer report annotation
+        run: |
+            npm i -g github:10up/phpcs-json-to-md
+            phpcs-json-to-md --path ./phpcs.json --output ./phpcs.md
+            cat phpcs.md >> $GITHUB_STEP_SUMMARY
