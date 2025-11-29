@@ -10,6 +10,7 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.sha }}
     - name: Run PHPCS inspection
+      # https://github.com/marketplace/actions/phpcs-code-review
       uses: rtCamp/action-phpcs-code-review@v3
       env:
         GH_BOT_TOKEN: ${{ secrets.GH_BOT_TOKEN }}
