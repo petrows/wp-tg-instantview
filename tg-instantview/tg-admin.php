@@ -1,160 +1,169 @@
 <?php
+/**
+ * TG InstantView Admin Page
+ *
+ * @package   TG-InstantView
+ */
 
-if (!defined("ABSPATH")) {
-    exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
-class tgiv_settings
-{
-    /**
-     * Holds the values to be used in the fields callbacks
-     */
-    private $options;
+/**
+ * TG InstantView Admin settings page class
+ */
+class Tgiv_Settings {
 
-    /**
-     * Start up
-     */
-    public function __construct()
-    {
-        add_action( 'admin_menu', array( $this, 'add_plugin_page' ) );
-        add_action( 'admin_init', array( $this, 'page_init' ) );
-    }
+	/**
+	 * Holds the values to be used in the fields callbacks
+	 *
+	 * @var array
+	 */
+	private $options;
 
-    /**
-     * Add options page
-     */
-    public function add_plugin_page()
-    {
-        // This page will be under "Settings"
-        add_options_page(
-            'TG InstantView Admin',
-            'TG InstantView',
-            'manage_options',
-            'tgiv-instantview-setting-admin',
-            array( $this, 'create_admin_page' )
-        );
-    }
+	/**
+	 * Start up
+	 */
+	public function __construct() {
+		add_action( 'admin_menu', array( $this, 'add_plugin_page' ) );
+		add_action( 'admin_init', array( $this, 'page_init' ) );
+	}
 
-    /**
-     * Options page callback
-     */
-    public function create_admin_page()
-    {
-        // Set class property
-        $this->options = tgiv_options();
+	/**
+	 * Add options page
+	 */
+	public function add_plugin_page() {
+		/* This page will be under "Settings" */
+		add_options_page(
+			'TG InstantView Admin',
+			'TG InstantView',
+			'manage_options',
+			'tgiv-instantview-setting-admin',
+			array( $this, 'create_admin_page' )
+		);
+	}
 
-        ?>
-        <div class="wrap">
-            <h1>TG InstantView settings</h1>
-            <form method="post" action="options.php">
-            <?php
-                // This prints out all hidden setting fields
-                settings_fields( 'tgiv_instantview' );
-                do_settings_sections( 'tgiv-instantview-setting-admin' );
-                submit_button();
-            ?>
-            </form>
-        </div>
-        <?php
-    }
+	/**
+	 * Options page callback
+	 */
+	public function create_admin_page() {
+		/* Set class property */
+		$this->options = tgiv_options();
 
-    /**
-     * Register and add settings
-     */
-    public function page_init()
-    {
-        register_setting(
-            'tgiv_instantview', // Option group
-            'tgiv_instantview_render', // Option name
-            array( $this, 'sanitize' ) // Sanitize
-        );
+		?>
+		<div class="wrap">
+			<h1>TG InstantView settings</h1>
+			<form method="post" action="options.php">
+			<?php
+				/* This prints out all hidden setting fields */
+				settings_fields( 'tgiv_instantview' );
+				do_settings_sections( 'tgiv-instantview-setting-admin' );
+				submit_button();
+			?>
+			</form>
+		</div>
+		<?php
+	}
 
-        add_settings_section(
-            'tgiv_render_options', // ID
-            'Render options', // Title
-            array( $this, 'print_section_info_render' ), // Callback
-            'tgiv-instantview-setting-admin' // Page
-        );
+	/**
+	 * Register and add settings
+	 */
+	public function page_init() {
+		register_setting(
+			'tgiv_instantview', // Option group.
+			'tgiv_instantview_render', // Option name.
+			array( $this, 'sanitize' ) // Sanitize.
+		);
 
-        add_settings_field(
-            'tgiv_channel_name', // ID
-            'Telegram channel', // Title
-            array( $this, 'channel_name_callback' ), // Callback
-            'tgiv-instantview-setting-admin', // Page
-            'tgiv_render_options' // Section
-        );
-        add_settings_field(
-            'tgiv_display_date', // ID
-            'Display post date?', // Title
-            array( $this, 'display_date_callback' ), // Callback
-            'tgiv-instantview-setting-admin', // Page
-            'tgiv_render_options' // Section
-        );
-        add_settings_field(
-            'tgiv_display_author', // ID
-            'Display post author?', // Title
-            array( $this, 'display_author_callback' ), // Callback
-            'tgiv-instantview-setting-admin', // Page
-            'tgiv_render_options' // Section
-        );
-    }
+		add_settings_section(
+			'tgiv_render_options', // ID.
+			'Render options', // Title.
+			array( $this, 'print_section_info_render' ), // Callback.
+			'tgiv-instantview-setting-admin' // Page.
+		);
 
-    /**
-     * Sanitize each setting field as needed
-     *
-     * @param array $input Contains all settings fields as array keys
-     */
-    public function sanitize( $input )
-    {
-        $new_input = array();
-        if (isset($input['tgiv_channel_name'])) {
-            $channel_name = $input['tgiv_channel_name'];
-            $channel_name = trim($channel_name);
-            $channel_name = strtolower($channel_name);
-            $channel_name = preg_replace( '/[^a-z0-9_-]+/', '', $channel_name);
-            // Channel name should starts from @
-            if (strlen($channel_name) && $channel_name[0] != '@') {
-                $channel_name = '@'.$channel_name;
-            }
-            $new_input['tgiv_channel_name'] = $channel_name;
-        }
-        $new_input['tgiv_display_date'] = isset($input['tgiv_display_date']);
-        $new_input['tgiv_display_author'] = isset($input['tgiv_display_author']);
-        return $new_input;
-    }
+		add_settings_field(
+			'tgiv_channel_name', // ID.
+			'Telegram channel', // Title.
+			array( $this, 'channel_name_callback' ), // Callback.
+			'tgiv-instantview-setting-admin', // Page.
+			'tgiv_render_options' // Section.
+		);
+		add_settings_field(
+			'tgiv_display_date', // ID.
+			'Display post date?', // Title.
+			array( $this, 'display_date_callback' ), // Callback.
+			'tgiv-instantview-setting-admin', // Page.
+			'tgiv_render_options' // Section.
+		);
+		add_settings_field(
+			'tgiv_display_author', // ID.
+			'Display post author?', // Title.
+			array( $this, 'display_author_callback' ), // Callback.
+			'tgiv-instantview-setting-admin', // Page.
+			'tgiv_render_options' // Section.
+		);
+	}
 
-    /**
-     * Print the Section text
-     */
-    public function print_section_info_render()
-    {
-        print 'What should be displayed in InstantView page';
-    }
+	/**
+	 * Sanitize each setting field as needed
+	 *
+	 * @param array $input Contains all settings fields as array keys.
+	 */
+	public function sanitize( $input ) {
+		$new_input = array();
+		if ( isset( $input['tgiv_channel_name'] ) ) {
+			$channel_name = $input['tgiv_channel_name'];
+			$channel_name = trim( $channel_name );
+			$channel_name = strtolower( $channel_name );
+			$channel_name = preg_replace( '/[^a-z0-9_-]+/', '', $channel_name );
+			/* Channel name must starts from @ */
+			if ( strlen( $channel_name ) && '@' !== $channel_name[0] ) {
+				$channel_name = '@' . $channel_name;
+			}
+			$new_input['tgiv_channel_name'] = $channel_name;
+		}
+		$new_input['tgiv_display_date']   = isset( $input['tgiv_display_date'] );
+		$new_input['tgiv_display_author'] = isset( $input['tgiv_display_author'] );
+		return $new_input;
+	}
 
-    /**
-     * Get the settings option array and print one of its values
-     */
-    public function channel_name_callback()
-    {
-        printf(
-            '<input type="text" id="tgiv_channel_name" name="tgiv_instantview_render[tgiv_channel_name]" value="%s" />',
-            isset( $this->options['tgiv_channel_name'] ) ? esc_attr( $this->options['tgiv_channel_name']) : ''
-        );
-    }
-    public function display_date_callback()
-    {
-        printf(
-            '<input type="checkbox" id="tgiv_display_date" name="tgiv_instantview_render[tgiv_display_date]" value="ON" %s/>',
-            $this->options['tgiv_display_date'] ? 'checked="checked"' : ''
-        );
-    }
-    public function display_author_callback()
-    {
-        printf(
-            '<input type="checkbox" id="tgiv_display_author" name="tgiv_instantview_render[tgiv_display_author]" value="ON" %s/>',
-            $this->options['tgiv_display_author'] ? 'checked="checked"' : ''
-        );
-    }
+	/**
+	 * Print the Section text
+	 */
+	public function print_section_info_render() {
+		print 'What should be displayed in InstantView page';
+	}
+
+	/**
+	 * Get the settings option array and print one of its values
+	 */
+	public function channel_name_callback() {
+		printf(
+			'<input type="text" id="tgiv_channel_name" name="tgiv_instantview_render[tgiv_channel_name]" value="%s" />',
+			isset( $this->options['tgiv_channel_name'] ) ? esc_attr( $this->options['tgiv_channel_name'] ) : ''
+		);
+	}
+
+	/**
+	 * Display checkbox for date option
+	 */
+	public function display_date_callback() {
+		printf(
+			'<input type="checkbox" id="tgiv_display_date" name="tgiv_instantview_render[tgiv_display_date]" value="ON" %s/>',
+			$this->options['tgiv_display_date'] ? 'checked="checked"' : ''
+		);
+	}
+
+	/**
+	 * Display checkbox for author option
+	 */
+	public function display_author_callback() {
+		printf(
+			'<input type="checkbox" id="tgiv_display_author" name="tgiv_instantview_render[tgiv_display_author]" value="ON" %s/>',
+			$this->options['tgiv_display_author'] ? 'checked="checked"' : ''
+		);
+	}
 }
 
-$tgiv_settings_page = new tgiv_settings();
+$tgiv_settings_page = new Tgiv_Settings();
