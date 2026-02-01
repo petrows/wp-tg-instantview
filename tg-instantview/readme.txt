@@ -2,8 +2,8 @@
 Contributors: petro64
 Tags: telegram
 Requires at least: 5.0
-Tested up to: 6.6
-Stable tag: 1.6
+Tested up to: 6.9
+Stable tag: 1.7
 Requires PHP: 7.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
