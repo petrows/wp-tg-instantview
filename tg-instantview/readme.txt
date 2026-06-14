@@ -2,8 +2,8 @@
 Contributors: petro64
 Tags: telegram
 Requires at least: 5.0
-Tested up to: 6.9
-Stable tag: 1.7
+Tested up to: 7.0
+Stable tag: 1.8
 Requires PHP: 7.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -54,6 +54,12 @@ To test, how your posts appears for Telegram bot, just add `tg-instantview=1` pa
 3. InstantView opened (gallery)
 
 == Changelog ==
+
+= 1.8 =
+* Tested with WordPress 7.0
+
+= 1.7 =
+* Tested with WordPress 6.9
 
 = 1.6 =
 * Fixes warning in log, if request does not contain User-Agent header
