@@ -3,7 +3,7 @@ Contributors: petro64
 Tags: telegram
 Requires at least: 5.0
 Tested up to: 7.0
-Stable tag: 1.9.0
+Stable tag: 1.9.1
 Requires PHP: 7.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -55,6 +55,9 @@ To test, how your posts appears for Telegram bot, just add `tg-instantview=1` pa
 3. InstantView opened (gallery)
 
 == Changelog ==
+
+= 1.9.1 =
+* Unwrap Gutenberg pullquote figures so Telegram can render their blockquotes.
 
 = 1.9.0 =
 * Add an opt-in media processing setting for Instant View output.

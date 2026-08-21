@@ -28,7 +28,7 @@ account password interactively.
 deployment, prefer a release tag:
 
 ```bash
-REF=v1.9.0 ./deploy/deploy-over-ssh.sh
+REF=v1.9.1 ./deploy/deploy-over-ssh.sh
 ```
 
 ## Verify on the server

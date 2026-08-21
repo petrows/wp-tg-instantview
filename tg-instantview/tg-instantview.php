@@ -13,7 +13,7 @@
  * Plugin Name: TG-InstantView Media Controls
  * Plugin URI: https://github.com/viktor-drobek/wp-tg-instantview
  * Description: Triggers Telegram InstantView for posts
- * Version: 1.9.0
+ * Version: 1.9.1
  * Author: Petro, Viktor Drobek
  * Author URI: https://petro.ws/
  * Update URI: https://github.com/viktor-drobek/wp-tg-instantview

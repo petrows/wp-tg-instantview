@@ -87,4 +87,12 @@ tgiv_test_assert( '' === tgiv_get_featured_media_html( 'remove' ), 'remove mode 
 tgiv_test_assert( false !== strpos( tgiv_get_featured_media_html( 'link' ), 'featured.jpg' ), 'link mode must link featured image' );
 tgiv_test_assert( false !== strpos( tgiv_get_featured_media_html( 'keep' ), '<img' ), 'keep mode must render featured image' );
 
+$pullquote = '<p>Before quote</p><figure class="wp-block-pullquote"><blockquote><p>Telegram quote</p></blockquote></figure><p>After quote</p>';
+foreach ( array( 'keep', 'remove', 'link' ) as $mode ) {
+	$normalized_quote = tgiv_process_media_html( $pullquote, $mode );
+	tgiv_test_assert( false === strpos( $normalized_quote, '<figure' ), "{$mode} mode must unwrap pullquote figure" );
+	tgiv_test_assert( false !== strpos( $normalized_quote, '<blockquote' ), "{$mode} mode must preserve blockquote" );
+	tgiv_test_assert( false !== strpos( $normalized_quote, 'Telegram quote' ), "{$mode} mode must preserve quote text" );
+}
+
 fwrite( STDOUT, "Media tests passed\n" );

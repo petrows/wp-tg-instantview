@@ -216,6 +216,40 @@ function tgiv_media_removal_target( $node, $root ) {
 }
 
 /**
+ * Unwrap WordPress pullquotes that Telegram cannot render inside a figure.
+ *
+ * Gutenberg renders pullquotes as <figure><blockquote>...</blockquote></figure>,
+ * while Telegram Instant View only accepts blockquote outside figure.
+ *
+ * @param DOMXPath $xpath Document XPath helper.
+ * @param DOMNode  $root  Processing root.
+ * @return void
+ */
+function tgiv_unwrap_quote_figures_dom( $xpath, $root ) {
+	$nodes = $xpath->query( './/figure[./blockquote]', $root );
+	if ( ! $nodes ) {
+		return;
+	}
+
+	$figures = array();
+	foreach ( $nodes as $node ) {
+		$figures[] = $node;
+	}
+
+	foreach ( $figures as $figure ) {
+		if ( ! $figure->parentNode || ! tgiv_media_node_is_attached( $figure, $root ) ) {
+			continue;
+		}
+
+		$parent = $figure->parentNode;
+		while ( $figure->firstChild ) {
+			$parent->insertBefore( $figure->firstChild, $figure );
+		}
+		$parent->removeChild( $figure );
+	}
+}
+
+/**
  * Process media with DOMDocument.
  *
  * @param string $html Rendered post HTML.
@@ -246,6 +280,10 @@ function tgiv_process_media_dom( $html, $mode ) {
 		return false;
 	}
 	$root = $roots->item( 0 );
+
+	/* Telegram does not support blockquote nested inside figure. */
+	tgiv_unwrap_quote_figures_dom( $xpath, $root );
+
 	$nodes = $xpath->query(
 		'.//picture | .//iframe | .//video | .//audio | .//object | .//embed | .//img[not(ancestor::picture)]',
 		$root
@@ -266,6 +304,10 @@ function tgiv_process_media_dom( $html, $mode ) {
 			|| ! $node->parentNode
 			|| ! tgiv_media_node_is_attached( $node, $root )
 		) {
+			continue;
+		}
+
+		if ( 'keep' === $mode ) {
 			continue;
 		}
 
@@ -382,6 +424,17 @@ function tgiv_media_link_html( $url, $tag = 'media', $label = '' ) {
  * @return string Processed HTML.
  */
 function tgiv_process_media_fallback( $html, $mode ) {
+	/* Unwrap the standard Gutenberg pullquote markup. */
+	$html = preg_replace(
+		'#<figure\b[^>]*>\s*(<blockquote\b[^>]*>[\s\S]*?</blockquote\s*>)\s*</figure\s*>#i',
+		'$1',
+		$html
+	);
+
+	if ( 'keep' === $mode ) {
+		return $html;
+	}
+
 	$paired_pattern = '#<(iframe|video|audio|object|picture)\b[^>]*>[\s\S]*?</\1\s*>#i';
 	$void_pattern   = '#<(img|embed)\b[^>]*\/?>#i';
 
@@ -417,7 +470,14 @@ function tgiv_process_media_fallback( $html, $mode ) {
  * @return string Processed HTML.
  */
 function tgiv_process_media_html( $html, $mode = 'keep' ) {
-	if ( 'keep' === $mode || ! in_array( $mode, array( 'remove', 'link' ), true ) ) {
+	if ( ! in_array( $mode, array( 'keep', 'remove', 'link' ), true ) ) {
+		$mode = 'keep';
+	}
+
+	$has_quote_figure = false !== stripos( $html, '<figure' )
+		&& false !== stripos( $html, '<blockquote' );
+
+	if ( 'keep' === $mode && ! $has_quote_figure ) {
 		return $html;
 	}
 
