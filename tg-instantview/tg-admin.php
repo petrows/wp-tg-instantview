@@ -103,6 +103,20 @@ class Tgiv_Settings {
 			'tgiv-instantview-setting-admin', // Page.
 			'tgiv_render_options' // Section.
 		);
+		add_settings_field(
+			'tgiv_process_media', // ID.
+			'Process media?', // Title.
+			array( $this, 'process_media_callback' ), // Callback.
+			'tgiv-instantview-setting-admin', // Page.
+			'tgiv_render_options' // Section.
+		);
+		add_settings_field(
+			'tgiv_media_action', // ID.
+			'Media action', // Title.
+			array( $this, 'media_action_callback' ), // Callback.
+			'tgiv-instantview-setting-admin', // Page.
+			'tgiv_render_options' // Section.
+		);
 	}
 
 	/**
@@ -125,6 +139,14 @@ class Tgiv_Settings {
 		}
 		$new_input['tgiv_display_date']   = isset( $input['tgiv_display_date'] );
 		$new_input['tgiv_display_author'] = isset( $input['tgiv_display_author'] );
+		$new_input['tgiv_process_media']  = isset( $input['tgiv_process_media'] );
+		$new_input['tgiv_media_action']   = 'remove';
+		if ( isset( $input['tgiv_media_action'] ) ) {
+			$media_action = sanitize_key( wp_unslash( $input['tgiv_media_action'] ) );
+			if ( in_array( $media_action, array( 'remove', 'link' ), true ) ) {
+				$new_input['tgiv_media_action'] = $media_action;
+			}
+		}
 		return $new_input;
 	}
 
@@ -163,6 +185,29 @@ class Tgiv_Settings {
 			'<input type="checkbox" id="tgiv_display_author" name="tgiv_instantview_render[tgiv_display_author]" value="ON" %s/>',
 			$this->options['tgiv_display_author'] ? 'checked="checked"' : ''
 		);
+	}
+
+	/**
+	 * Display checkbox for media processing.
+	 */
+	public function process_media_callback() {
+		printf(
+			'<label><input type="checkbox" id="tgiv_process_media" name="tgiv_instantview_render[tgiv_process_media]" value="ON" %s/> Remove media from the Instant View body or replace it with links.</label>',
+			$this->options['tgiv_process_media'] ? 'checked="checked"' : ''
+		);
+	}
+
+	/**
+	 * Display media processing action selector.
+	 */
+	public function media_action_callback() {
+		?>
+		<select id="tgiv_media_action" name="tgiv_instantview_render[tgiv_media_action]">
+			<option value="remove" <?php selected( $this->options['tgiv_media_action'], 'remove' ); ?>>Remove media</option>
+			<option value="link" <?php selected( $this->options['tgiv_media_action'], 'link' ); ?>>Replace media with links</option>
+		</select>
+		<p class="description">Applies to images, picture elements, iframes, video, audio, object and embed elements. Open Graph preview images are preserved.</p>
+		<?php
 	}
 }
 
