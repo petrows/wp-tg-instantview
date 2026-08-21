@@ -74,11 +74,11 @@ HTML;
 tgiv_test_assert( $html === tgiv_process_media_html( $html, 'keep' ), 'keep mode must not modify HTML' );
 
 $removed = tgiv_process_media_html( $html, 'remove' );
-tgiv_test_assert( false === preg_match( '/<(?:img|picture|iframe|video|audio|object|embed)\b/i', $removed ), 'remove mode must remove media tags' );
+tgiv_test_assert( 0 === preg_match( '/<(?:img|picture|iframe|video|audio|object|embed)\b/i', $removed ), 'remove mode must remove media tags' );
 tgiv_test_assert( false !== strpos( $removed, 'Before' ) && false !== strpos( $removed, 'After' ), 'remove mode must preserve article text' );
 
 $linked = tgiv_process_media_html( $html, 'link' );
-tgiv_test_assert( false === preg_match( '/<(?:img|picture|iframe|video|audio|object|embed)\b/i', $linked ), 'link mode must remove original media tags' );
+tgiv_test_assert( 0 === preg_match( '/<(?:img|picture|iframe|video|audio|object|embed)\b/i', $linked ), 'link mode must remove original media tags' );
 tgiv_test_assert( false !== strpos( $linked, 'https://example.test/image.jpg' ), 'link mode must make relative image URLs absolute' );
 tgiv_test_assert( false !== strpos( $linked, 'https://video.example/embed/1' ), 'link mode must preserve iframe URL' );
 tgiv_test_assert( false === strpos( $linked, '<a href="https://example.test/full.jpg"><a' ), 'link mode must not create nested anchors' );
