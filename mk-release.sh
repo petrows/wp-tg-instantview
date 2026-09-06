@@ -1,9 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-rm -rf tmp/trunk
-mkdir -p tmp/trunk tmp/assets
+rm -rf -- tmp/package tmp/assets tmp/tg-instantview.zip
+mkdir -p -- tmp/package/tg-instantview tmp/assets
 
-cp -rva assets/* tmp/assets/ ; cp -rva tg-instantview/* tmp/trunk/
+cp -R -- assets/. tmp/assets/
+cp -R -- tg-instantview/. tmp/package/tg-instantview/
 
-cd tmp/trunk
-zip ../tg-instantview.zip *
+(
+	cd tmp/package
+	zip -qr ../tg-instantview.zip tg-instantview
+)
+
+echo "Created tmp/tg-instantview.zip"

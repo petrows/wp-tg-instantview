@@ -3,7 +3,7 @@ Contributors: petro64
 Tags: telegram
 Requires at least: 5.0
 Tested up to: 7.0
-Stable tag: 1.8
+Stable tag: 1.9.1
 Requires PHP: 7.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -19,6 +19,7 @@ Principal: it detects Telegram bot and returns special template for posts, to tr
 * No template submitting required.
 * No special links required.
 * Compatable with any cross-posting systems.
+* Optional media processing: keep media, remove it, or replace it with links.
 
 Original Telegram InstantView templates registry appears to be dead, my template was not reviewed and submitted in over 1 year. This plugin solves this issue server-side.
 
@@ -54,6 +55,15 @@ To test, how your posts appears for Telegram bot, just add `tg-instantview=1` pa
 3. InstantView opened (gallery)
 
 == Changelog ==
+
+= 1.9.1 =
+* Unwrap Gutenberg pullquote figures so Telegram can render their blockquotes.
+
+= 1.9.0 =
+* Add an opt-in media processing setting for Instant View output.
+* Add modes to remove images and embedded media or replace them with links.
+* Preserve Open Graph preview images when body media is processed.
+* Add a custom Update URI so WordPress.org does not overwrite the fork.
 
 = 1.8 =
 * Tested with WordPress 7.0

@@ -1,4 +1,8 @@
-# Wordpress Telegram Instant View plugin
+# WordPress Telegram Instant View plugin — media controls fork
+
+This public fork adds opt-in media processing to the original
+[`petrows/wp-tg-instantview`](https://github.com/petrows/wp-tg-instantview)
+plugin.
 
 Wordpress plugin to trigger [Telegram Instant View](https://instantview.telegram.org/) for all Blog posts.
 
@@ -10,6 +14,10 @@ posts, to trigger Instant View.
 * No template submitting required.
 * No special links required.
 * Compatable with any cross-posting systems.
+* Keep media unchanged by default.
+* Optionally remove article media or replace it with direct links.
+* Preserve the Open Graph image used by Telegram link preview cards.
+* Normalize Gutenberg pullquotes for Telegram Instant View compatibility.
 
 Original Telegram InstantView templates registry appears to be dead,
 my template was not reviewed and submitted in over 1 year. This plugin
@@ -27,6 +35,23 @@ My Telegram channel with plugin active: https://t.me/petro_ws
 * Or, download package from Releases page and install it via Wordpress Plugin Manager.
 * Or, manually: copy the `tg-instantview` into your `wp-content/plugins` directory.
 * Check plugin configuration in "Settings" -> "TG InstantView settings", you may configure your channel ID (appears in IV header).
+
+## Media controls
+
+Open **Settings → TG InstantView**:
+
+1. Enable **Process media?**.
+2. Choose **Remove media** or **Replace media with links**.
+3. Save changes and clear the WordPress, Cloudflare and Telegram preview caches.
+
+The option processes article images, `picture`, `iframe`, `video`, `audio`,
+`object` and `embed` elements. The Open Graph image remains available for the
+Telegram preview card.
+
+## Automated SSH deployment
+
+See [DEPLOY.md](DEPLOY.md) for the one-command deployment and rollback-safe
+server installer.
 
 ## Notes
 

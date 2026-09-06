@@ -10,11 +10,13 @@
  * @license   GPLv3
  *
  * @wordpress-plugin
- * Plugin Name: TG-InstantView
- * Plugin URI: https://github.com/petrows/wp-tg-instantview
+ * Plugin Name: TG-InstantView Media Controls
+ * Plugin URI: https://github.com/viktor-drobek/wp-tg-instantview
  * Description: Triggers Telegram InstantView for posts
- * Version: 1.8
+ * Version: 1.9.1
+ * Author: Petro, Viktor Drobek
  * Author URI: https://petro.ws/
+ * Update URI: https://github.com/viktor-drobek/wp-tg-instantview
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -50,6 +52,9 @@ add_filter( 'query_vars', 'tgiv_query_vars_filter' );
  */
 function tgiv_options() {
 	$options = get_option( 'tgiv_instantview_render' );
+	if ( ! is_array( $options ) ) {
+		$options = array();
+	}
 	if ( ! isset( $options['tgiv_channel_name'] ) ) {
 		$options['tgiv_channel_name'] = '';
 	}
@@ -63,8 +68,21 @@ function tgiv_options() {
 	} else {
 		$options['tgiv_display_author'] = boolval( $options['tgiv_display_author'] );
 	}
+	if ( ! isset( $options['tgiv_process_media'] ) ) {
+		$options['tgiv_process_media'] = false;
+	} else {
+		$options['tgiv_process_media'] = boolval( $options['tgiv_process_media'] );
+	}
+	if (
+		! isset( $options['tgiv_media_action'] )
+		|| ! in_array( $options['tgiv_media_action'], array( 'remove', 'link' ), true )
+	) {
+		$options['tgiv_media_action'] = 'remove';
+	}
 	return $options;
 }
+
+require_once __DIR__ . '/tg-media.php';
 
 /**
  * Function to control displayed links on plugin list page
